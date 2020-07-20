@@ -85,8 +85,17 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		//2. Use a switch statement to determine which difficulty was chosen.
 		//   Use timer.setDelay(delay) with different numbers to change the speed
 		//   of the game. The smaller the number, the faster it goes.
+		switch(choice) {
+		case "Beginner":
+			timer.setDelay(1000);
+		case "Moderate":
+			timer.setDelay(750);
+		case "Expert":
+			timer.setDelay(500);
+		}
 
 		//3. start the timer
+		timer.start();
 	}
 
 	public static void main(String[] args) {
@@ -103,6 +112,18 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		//1. Use a switch statement on e.getKeyCode()
 		//   to determine which key was pressed.
+		switch(e.getKeyCode()) {
+		case 37:
+			snake.setDirection(Direction.LEFT);
+		case 38:
+			snake.setDirection(Direction.UP);
+		case 39:
+			snake.setDirection(Direction.RIGHT);
+		case 40:
+			snake.setDirection(Direction.DOWN);
+		case 32:
+			snake.feed();
+		}
 		
 		// if an arrow key is pressed, set the snake's 
 		// direction accordingly
@@ -113,18 +134,27 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 
 	private void setFoodLocation() {
 		//1. Create a new Location object that is set to a random location
+		Random randgen = new Random();
+		Location newLocation = new Location(randgen.nextInt(WINDOW_WIDTH),randgen.nextInt(WINDOW_HEIGHT));
 		
 		//2. set the foodLocation variable equal to the Location object you just created.
 		//   use the snake's isLocationOnSnake method to make sure you don't put the food on the snake
+		
+		if(snake.isLocationOnSnake(newLocation)) {
+			newLocation = new Location(randgen.nextInt(WINDOW_WIDTH),randgen.nextInt(WINDOW_HEIGHT));
+			foodLocation = newLocation;
+		} else {
+			foodLocation = newLocation;
+		}
 		
 	}
 
 	private void gameOver() {
 		
 		//1. stop the timer
-		
+		timer.stop();
 		//2. tell the user their snake is dead
-		
+		JOptionPane.showMessageDialog(null, "YOU DIED");
 		//3. ask them if they want to play again.
 		
 		//4. if they want to play again
