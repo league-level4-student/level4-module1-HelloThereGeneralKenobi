@@ -157,9 +157,16 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 		JOptionPane.showMessageDialog(null, "YOU DIED");
 		//3. ask them if they want to play again.
 		
+		String input = JOptionPane.showInputDialog("Would you like to play again?");
 		//4. if they want to play again
 		//   reset the snake and the food and start the timer
 		//   else, exit the game
+		if(input.equalsIgnoreCase("Yes")) {
+			startGame();
+			setFoodLocation();
+			timer.restart();
+		}
+		
 		
 	}
 
@@ -171,13 +178,19 @@ public class _00_SnakeGame implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//1. update the snake
-
+		snake.update();
 		//2. if the snake is colliding with its own body 
 		//   or if the snake is out of bounds, call gameOver
-
+		if(snake.isHeadCollidingWithBody() || snake.isOutOfBounds()) {
+			gameOver();
+		}
 		//3. if the location of the head is equal to the location of the food,
 		// 	 feed the snake and set the food location
-
+		if(snake.getHeadLocation() == foodLocation) {
+			snake.feed();
+			setFoodLocation();
+		}
 		//4. call panel.repaint();
+		panel.repaint();
 	}
 }
